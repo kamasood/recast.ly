@@ -9,12 +9,19 @@ class App extends React.Component {
     super(props);
     this.state = {
 
-      // define states to monitor
+      videoList: exampleVideoData,
+      playerVideo: exampleVideoData[0]
 
     };
   }
 
   // add event handlers
+  onVideoTitleClick(event) {
+    console.log(this);
+    // this.setState({
+    //   playerVideo: event
+    // });
+  }
 
   render() {
 
@@ -29,10 +36,10 @@ class App extends React.Component {
         </nav>
         <div className="row">
           <div className="col-md-7">
-            <VideoPlayer video={exampleVideoData[0]} />
+            <VideoPlayer video={this.state.playerVideo} />
           </div>
           <div className="col-md-5">
-            <VideoList videos={exampleVideoData} />
+            <VideoList onVideoTitleClick={this.onVideoTitleClick} videos={this.state.videoList} />
           </div>
         </div>
       </div>
