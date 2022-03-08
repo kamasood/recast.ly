@@ -2,25 +2,34 @@ import Search from './Search.js';
 import VideoPlayer from './VideoPlayer.js';
 import VideoList from './VideoList.js';
 import exampleVideoData from '../data/exampleVideoData.js';
+import searchYouTube from '../lib/searchYouTube.js';
 
 class App extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
-
-      videoList: exampleVideoData,
-      playerVideo: exampleVideoData[0]
-
+      playerVideo: {},
+      videos: [],
     };
   }
 
-  // add event handlers
-  onVideoTitleClick(event) {
-    console.log(this);
-    // this.setState({
-    //   playerVideo: event
-    // });
+  componentDidMount() {
+    this.getYouTubeVideos('puppies');
+  }
+
+  getYouTubeVideos(query) {
+    searchYouTube(query, (data) => {
+      this.setState({
+        playerVideo: data[0],
+        videos: data
+      });
+    });
+  }
+
+  onVideoTitleClick(e, video) {
+    this.setState({
+      playerVideo: video
+    });
   }
 
   render() {
@@ -31,7 +40,7 @@ class App extends React.Component {
       <div>
         <nav className="navbar">
           <div className="col-md-6 offset-md-3">
-            <Search />
+            <Search handleSearchInputChange={this.getYouTubeVideos.bind(this)} />
           </div>
         </nav>
         <div className="row">
@@ -39,12 +48,17 @@ class App extends React.Component {
             <VideoPlayer video={this.state.playerVideo} />
           </div>
           <div className="col-md-5">
-            <VideoList onVideoTitleClick={this.onVideoTitleClick} videos={this.state.videoList} />
+            <VideoList
+              onVideoTitleClick={this.onVideoTitleClick.bind(this)}
+              videos={this.state.videos} />
           </div>
         </div>
       </div>
     );
   }
+
+
+
 }
 
 // In the ES6 spec, files are "modules" and do not share a top-level scope
