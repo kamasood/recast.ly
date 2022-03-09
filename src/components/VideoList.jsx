@@ -1,12 +1,12 @@
 import VideoListEntry from './VideoListEntry.js';
 
-var VideoList = ({videos, onVideoTitleClick}) => (
+var VideoList = ({videos, handleVideoTitleClick}) => (
   <div className="video-list">
     {videos.map( video =>
       <VideoListEntry
-        onVideoTitleClick={onVideoTitleClick}
+        handleVideoTitleClick={handleVideoTitleClick}
         video={video}
-        key={video.id.videoId}
+        key={video.etag}
       />
     )}
   </div>

@@ -1,21 +1,24 @@
+// import exampleVideoData from '../data/exampleVideoData.js';
 import Search from './Search.js';
 import VideoPlayer from './VideoPlayer.js';
 import VideoList from './VideoList.js';
-import exampleVideoData from '../data/exampleVideoData.js';
 import searchYouTube from '../lib/searchYouTube.js';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      playerVideo: {},
-      videos: [],
+      playerVideo: null, //I had an empty object, null is equivalent and less space
+      videos: []
     };
+
+    this.getYouTubeVideos('puppies'); // smoother to do initial query in constructor than in componentDidMount
   }
 
-  componentDidMount() {
-    this.getYouTubeVideos('puppies');
-  }
+  // React Life Cycle Hook:
+  // componentDidMount() {
+  //   this.getYouTubeVideos('puppies');
+  // }
 
   getYouTubeVideos(query) {
     searchYouTube(query, (data) => {
@@ -26,7 +29,7 @@ class App extends React.Component {
     });
   }
 
-  onVideoTitleClick(e, video) {
+  handleVideoTitleClick(e, video) { // use 'handle', not 'on' to start these handler functions
     this.setState({
       playerVideo: video
     });
@@ -49,7 +52,7 @@ class App extends React.Component {
           </div>
           <div className="col-md-5">
             <VideoList
-              onVideoTitleClick={this.onVideoTitleClick.bind(this)}
+              onVideoTitleClick={this.handleVideoTitleClick.bind(this)}
               videos={this.state.videos} />
           </div>
         </div>
